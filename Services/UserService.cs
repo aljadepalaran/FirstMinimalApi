@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using FirstMinimalApi.Utilities;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FirstMinimalApi;
 
