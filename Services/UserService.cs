@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using FirstMinimalApi.Utilities;
 
 namespace FirstMinimalApi;
 
@@ -8,7 +9,7 @@ public class UserService(AppDbContext _context) : IUserService
     {
         var user = new User {
             Username = request.Username,
-            Password = request.Password,
+            Password = PWHasher.Hash(request.Password),
             FirstName = request.FirstName,
             LastName = request.LastName
         };
