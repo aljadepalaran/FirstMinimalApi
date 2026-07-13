@@ -15,4 +15,9 @@ public class PWHasher
 
         return Convert.ToHexString(hash);
     }
+
+    public static bool ValidateHash(string hashedValue, string input)
+    {
+        return Hash(input) == hashedValue;
+    }
 }

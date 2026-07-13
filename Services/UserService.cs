@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using FirstMinimalApi.Utilities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FirstMinimalApi;
 
 public class UserService(AppDbContext _context) : IUserService
 {
-    public ApiResponse<User> RegisterUser(RegisterRequest request)
+    public async Task<ApiResponse<User>> RegisterUser(RegisterRequest request)
     {
         var user = new User {
             Username = request.Username,
@@ -13,15 +14,30 @@ public class UserService(AppDbContext _context) : IUserService
             FirstName = request.FirstName,
             LastName = request.LastName
         };
-        var result = _context.Add<User>(user);
-        Console.WriteLine($"Creating User Result: {result}");
-        _context.SaveChanges();
+        _context.Add<User>(user);
+        await _context.SaveChangesAsync();
         return ApiResponse<User>.Response(user, 200, "User has been registered.");
     }
     public ApiResponse<User> LoginUser(LoginRequest request)
     {
-        var user = new User { Username = request.Username, Password = request.Password };
-        return ApiResponse<User>.Response(user, 200, "User has been logged in");
+        var user = _context.User.FirstOrDefault<User>(dbUser => dbUser.Username == request.Username);
+
+        if (user != null)
+        {
+            var validCredentials = PWHasher.ValidateHash(user.Password, request.Password);
+            if (validCredentials)
+            {
+                return ApiResponse<User>.Response(user, 200, "User has been logged in.");
+            }
+            else
+            {
+                return ApiResponse<User>.Response(new User(), 422, "Invalid credentials.");
+            }
+        }
+        else
+        {
+            return ApiResponse<User>.Response(new User(), 404, "User not found.");
+        }
     }
     public async Task<ApiResponse<User[]>> AllUsers()
     {
