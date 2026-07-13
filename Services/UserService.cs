@@ -1,6 +1,6 @@
 namespace FirstMinimalApi;
 
-public class UserService : IUserService
+public class UserService(AppDbContext _context) : IUserService
 {
     public ApiResponse<User> RegisterUser(RegisterRequest request)
     {
@@ -10,6 +10,8 @@ public class UserService : IUserService
             FirstName = request.FirstName,
             LastName = request.LastName
         };
+        var result = _context.Add<User>(user);
+        Console.WriteLine($"Creating User Result: {result}");
         return ApiResponse<User>.Response(user, 200, "User has been registered.");
     }
     public ApiResponse<User> LoginUser(LoginRequest request)

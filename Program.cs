@@ -1,9 +1,15 @@
 using FirstMinimalApi;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddOpenApi()
-    .AddScoped<IUserService, UserService>();
+    .AddScoped<IUserService, UserService>()
+    .AddDbContext<AppDbContext>(options => 
+        options.UseInMemoryDatabase(
+            builder.Configuration.GetConnectionString("ExampleDatabase")!
+        )
+    );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
