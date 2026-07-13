@@ -1,6 +1,26 @@
-@FirstMinimalApi_HostAddress = http://localhost:5252
+### Register user
+POST http://localhost:5252/register
+Content-Type: application/json
 
-GET {{FirstMinimalApi_HostAddress}}/weatherforecast/
-Accept: application/json
+{
+  "Username": "username123",
+  "Password": "password"
+}
 
-###
+### Create user
+POST http://localhost:5252/users
+Content-Type: application/json
+
+{
+  "Username": "username123",
+  "Password": "password"
+}
+
+### Login user
+POST http://localhost:5252/login
+Content-Type: application/json
+
+{
+  "Username": "username1231",
+  "Password": "password"
+}
