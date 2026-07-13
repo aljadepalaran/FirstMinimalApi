@@ -1,5 +1,9 @@
+using FirstMinimalApi;
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddOpenApi();
+builder.Services
+    .AddOpenApi()
+    .AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -9,12 +13,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.MapGet("/register", () =>
-{
-    return("You are now registered");
-}).WithName("Register");
-
+app.MapUserEndpoints();
 app.MapGet("/", () =>
 {
     return("Welcome to the homepage");
