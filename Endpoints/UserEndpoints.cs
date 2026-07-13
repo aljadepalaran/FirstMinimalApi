@@ -15,5 +15,10 @@ public static class UserEndpoints
             var response = userService.LoginUser(request);
             return response;
         });
+        app.MapGet("/users", (IUserService userService) =>
+        {
+            var response = userService.AllUsers();
+            return response;
+        });
     }
 }
