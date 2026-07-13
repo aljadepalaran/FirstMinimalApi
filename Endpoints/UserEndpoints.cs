@@ -9,5 +9,11 @@ public static class UserEndpoints
             var response = userService.RegisterUser(request);
             return response;
         });
+
+        app.MapPost("/login", (LoginRequest request, IUserService userService) =>
+        {
+            var response = userService.LoginUser(request);
+            return response;
+        });
     }
 }
