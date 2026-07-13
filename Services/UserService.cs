@@ -4,7 +4,12 @@ public class UserService : IUserService
 {
     public ApiResponse<User> RegisterUser(RegisterRequest request)
     {
-        var user = new User { Username = request.Username, Password = request.Password };
+        var user = new User {
+            Username = request.Username,
+            Password = request.Password,
+            FirstName = request.FirstName,
+            LastName = request.LastName
+        };
         return ApiResponse<User>.Response(user, 200, "User has been registered.");
     }
     public ApiResponse<User> LoginUser(LoginRequest request)
